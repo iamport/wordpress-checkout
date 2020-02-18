@@ -5,6 +5,7 @@
 <?php
 	$html_dimmed_background = ob_get_clean();
 	$trim_html_dimmed_background = preg_replace($regexNewline, '', $html_dimmed_background);
+	ob_start();
 ?>
 	<script type="text/javascript">
 		jQuery(function($) {
@@ -14,4 +15,5 @@
 		});
 	</script>
 <?php
+    $trim_html_dimmed_background .= ob_get_clean();
 	return $trim_html_dimmed_background;

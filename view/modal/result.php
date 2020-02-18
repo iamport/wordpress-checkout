@@ -16,6 +16,7 @@
 <?php
 	$html_result_box = ob_get_clean();
 	$trim_html_result_box = preg_replace($regexNewline, '', $html_result_box);
+	ob_start();
 ?>
 	<script type="text/javascript">
 		jQuery(function($) {
@@ -24,3 +25,6 @@
 			}
 		});
 	</script>
+<?php
+	$trim_html_result_box .= ob_get_clean();
+?>

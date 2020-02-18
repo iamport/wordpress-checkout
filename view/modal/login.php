@@ -14,6 +14,7 @@
 <?php
 	$html_login_box = ob_get_clean();
 	$trim_html_login_box = preg_replace($regexNewline, '', $html_login_box);
+	ob_start();
 ?>
 	<script type="text/javascript">
 		jQuery(function($) {
@@ -22,3 +23,6 @@
 			}
 		});
 	</script>
+<?php
+	$trim_html_login_box .= ob_get_clean();
+?>
