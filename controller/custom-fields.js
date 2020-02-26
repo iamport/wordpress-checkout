@@ -165,16 +165,40 @@ jQuery(($) => {
 					uuidToArrayForRenderHTML[uuid] = true;
 				}
 
-				iamportSurveyBox.find('[data-for]').each((idx, elem) => {
-					const $elem = $(elem);
-					const elemVar = $elem.val();
-					let dataFor = $elem.attr('data-for');
+				// iamportSurveyBox.find('[data-for]').each((idx, elem) => {
+				for (let i = customFields.length-1; i >= 0; i--) { //dataFor 가 있는 것만 검색
+					// const $elem = $(elem);
+					// const elemVar = $elem.val();
+					// let dataFor = $elem.attr('data-for');
+					const field = customFields[i].domClass;
+					const dataFor = field.dataFor;
+					const fieldValue = field.getValue();
 
-					if ( elemVar ) {
-						if ( dataFor === "phone" ) dataFor = "tel";
-						iamportBox.find('input[name="buyer_' + dataFor + '"]').val(elemVar);
+					if (!dataFor)	continue;
+
+					if (fieldValue) {
+						if (dataFor === 'phone') {
+							iamportBox.find('input[name="buyer_tel"]').val(fieldValue);
+						} else if (dataFor === 'address') {
+							if (field instanceof AddressFields) {
+								const modalContainer = iamportBox.find('.iamport-modal-container');
+								const inputFields = modalContainer.data('inputFields');
+								const inputFieldsLength = inputFields.length;
+
+								//TODO : address type은 하나 뿐이므로 shipping_addr로 가정
+								for (let i = 0; i < inputFieldsLength; i++) {
+									const inputField = inputFields[i];
+									if (inputField instanceof AddressFields) {
+										inputField.setAddress(field.getAddress());
+									}
+								}
+							}
+						} else {
+							iamportBox.find('input[name="buyer_' + dataFor + '"]').val(fieldValue);
+						}
 					}
-				});
+				}
+				// });
 
 				setIamportModalBox($, iamportBox, device);
 
@@ -244,6 +268,13 @@ jQuery(($) => {
 					modalContainer[0].scrollTop = inputContainer[0].offsetTop;
 
 					return false;
+				}
+
+				if (inputName == 'shipping_addr') {
+					let addr = inputField.getAddress();
+					inputValue = addr.address + ', ' + addr.detail;
+
+					inputValues['shipping_postcode'] = addr.postcode;
 				}
 
 				//값을 담아서 전달
@@ -453,6 +484,7 @@ function iamportAjaxCall($, iamportBox, fileFields, inputValues, buttonContext, 
 	const buyer_email = inputValues.buyer_email || "";
 	const buyer_tel = (inputValues.buyer_tel || "").replace(/[^0-9-]/g, '');
 	const shipping_addr = inputValues.shipping_addr || "";
+	const shipping_postcode = inputValues.shipping_postcode || "";
 	const order_amount = inputValues.order_amount || -1;
 	const tax_free_amount = inputValues.tax_free_amount || 0;
 	const amount_label = inputValues.amount_label;
@@ -500,6 +532,8 @@ function iamportAjaxCall($, iamportBox, fileFields, inputValues, buttonContext, 
 			buyer_name: buyer_name,
 			buyer_email: buyer_email,
 			buyer_tel: buyer_tel,
+			buyer_addr: shipping_addr,
+			buyer_postcode: shipping_postcode,
 			merchant_uid: rsp.order_uid,
 			m_redirect_url: rsp.thankyou_url,
 		};

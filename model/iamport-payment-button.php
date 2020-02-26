@@ -58,7 +58,7 @@ if ( !class_exists('IamportPaymentButton') ) {
 			wp_register_script('daum-postcode-for-https', 'https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js');
 			wp_enqueue_script('daum-postcode-for-https');
 
-			wp_register_script('iamport-bundle-js', plugins_url('../dist/bundle.js', __FILE__), array(), '20191230');
+			wp_register_script('iamport-bundle-js', plugins_url('../dist/bundle.js', __FILE__), array(), '20200226');
 		}
 
 		public function hook_payment_box($atts, $content = null) {

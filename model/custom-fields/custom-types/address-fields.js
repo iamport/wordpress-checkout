@@ -29,9 +29,9 @@ export class AddressFields extends ButtonFields {
 			this.extraKey = domElement.attr('name');
 
 			if ( addressDetail ) {
-				this.extraValue = address + ', ' + addressDetail + ', ' + postcode;	
+				this.extraValue = address + ', ' + addressDetail + ', ' + postcode;
 			} else {
-				this.extraValue = address + ', ' + postcode;	
+				this.extraValue = address + ', ' + postcode;
 			}
 
 			return true;
@@ -50,12 +50,38 @@ export class AddressFields extends ButtonFields {
 				if ( addressDetail ) {
 					return address + ', ' + addressDetail + ', ' + postcode;
 				}
-					
+
 				return address + ', ' + postcode;
 			}
 		}
 
 		return super.getValue();
+	}
+
+	getAddress() {
+		if ( this.htmlElement) {
+			const postcode = this.htmlElement.find('input.iamport-postcode').val();
+			const address = this.htmlElement.find('input.iamport-address').val();
+			const addressDetail = this.htmlElement.find('input.iamport-address-detail').val();
+
+			if ( postcode != '우편번호' && address != '주소' ) {
+				return {
+					"address" : address,
+					"detail" : addressDetail,
+					"postcode" : postcode
+				}
+			}
+		}
+
+		return null;
+	}
+
+	setAddress(addr) {
+		if ( this.htmlElement && addr ) {
+			this.htmlElement.find('input.iamport-postcode').val(addr.postcode);
+			this.htmlElement.find('input.iamport-address').val(addr.address);
+			this.htmlElement.find('input.iamport-address-detail').val(addr.detail);
+		}
 	}
 
 }
