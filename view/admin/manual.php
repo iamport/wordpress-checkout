@@ -303,7 +303,7 @@
 		</div>
 
 		<h3>5. 결제 데이터 사전 입력</h3>
-		<h4>결제에 필요한 데이터(이름, 이메일, 전화번호)를 미리 입력받을 수 있으며 그 값은 결제를 위한 데이터 입력시 자동으로 반영됩니다.</h4>
+		<h4>결제에 필요한 데이터(이름, 이메일, 전화번호, 주소)를 미리 입력받을 수 있으며 그 값은 결제를 위한 데이터 입력시 자동으로 반영됩니다.</h4>
 		<div class="shortcode-box">
 			<div class="attr-text" style="width: 100%;">
 				<p class="attr-title">결제자 이름<img src="<?=plugin_dir_url( __FILE__ )?>../../assets/img/tag-1.png" class="attr-tag"></p>
@@ -329,6 +329,15 @@
 						예시) [iamport_payment_button_field type="text" <b>data-for="phone"</b>]전화번호[/iamport_payment_button_field]
 					</span>
 				</p>
+
+                <p class="attr-title">결제자 주소<img src="<?=plugin_dir_url( __FILE__ )?>../../assets/img/tag-4.png" class="attr-tag"></p>
+                <p class="attr-explanation">
+					<span class="attr-detail">
+						옵션) data-for="address"<br>
+						예시) [iamport_payment_button_field type="address" <b>data-for="address"</b>]주소[/iamport_payment_button_field]<br>
+                        주의) type="address" 필드에만 적용됩니다.
+					</span>
+                </p>
 			</div>
 
 			<img src="<?=plugin_dir_url( __FILE__ )?>../../assets/img/pre-write.jpg" class="attr-img" style="margin-right: 1em;">
