@@ -4,7 +4,7 @@ Donate link: http://www.iamport.kr
 Tags: payment, payment-button, iamport, woocommerce, button, pg, gateway
 Requires at least: 3.0.1
 Tested up to: 5.3.2
-Stable tag: 1.1.13
+Stable tag: 1.1.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,11 @@ https://www.facebook.com/iamportservice
 
 
 == Changelog ==
+= 1.1.14 =
+* 워드프레스 REST API로 페이지 정보 조회 시 script tag 가 json 응답을 해치는 문제 수정(by alghost)
+* shipping_addr 필드 입력값이 IMP\_request_pay() 호출 시 buyer\_addr, buyer\_postcode 로 제대로 전달될 수 있도록 개선
+* data-for="address" 로 shipping_addr 사전입력받은 값 채우기 연결
+
 = 1.1.13 =
 * [아임포트 설정] 페이지 내 <결제수단별 PG설정> 값을 버튼 숏코드 별로 대체할 수 있도록 속성 지원(pg\_for\_card, pg\_for\_trans, pg\_for\_vbank, pg\_for\_phone, pg\_for\_kakaopay, pg\_for\_paypal)
 * 설문조사 작성 후 결제페이지 진입했을 때 뒤로가기 버튼 안나오는 버그 수정
