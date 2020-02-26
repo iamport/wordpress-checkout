@@ -90,6 +90,42 @@
 					결제완료처리 후 이동될 별도의 웹 페이지를 지정합니다.<br>
 					<span class="attr-detail">예시) redirect_after="http://www.iamport.kr"</span>
 				</p>
+
+                <p class="attr-title">pg_for_card</p>
+                <p class="attr-explanation">
+                    신용카드 결제수단에 대해 [아임포트 설정]페이지 내 PG설정값 대신 적용할 PG설정값(아임포트 복수PG기능 참조)<br>
+                    <span class="attr-detail">예시) pg_for_card="kcp" 또는 pg_for_card="kcp.T0000"</span>
+                </p>
+
+                <p class="attr-title">pg_for_trans</p>
+                <p class="attr-explanation">
+                    실시간계좌이체 결제수단에 대해 [아임포트 설정]페이지 내 PG설정값 대신 적용할 PG설정값(아임포트 복수PG기능 참조)<br>
+                    <span class="attr-detail">예시) pg_for_trans="kcp" 또는 pg_for_trans="kcp.T0000"</span>
+                </p>
+
+                <p class="attr-title">pg_for_vbank</p>
+                <p class="attr-explanation">
+                    가상계좌 결제수단에 대해 [아임포트 설정]페이지 내 PG설정값 대신 적용할 PG설정값(아임포트 복수PG기능 참조)<br>
+                    <span class="attr-detail">예시) pg_for_vbank="kcp" 또는 pg_for_vbank="kcp.T0000"</span>
+                </p>
+
+                <p class="attr-title">pg_for_phone</p>
+                <p class="attr-explanation">
+                    휴대폰소액결제 결제수단에 대해 [아임포트 설정]페이지 내 PG설정값 대신 적용할 PG설정값(아임포트 복수PG기능 참조)<br>
+                    <span class="attr-detail">예시) pg_for_phone="kcp" 또는 pg_for_phone="kcp.T0000"</span>
+                </p>
+
+                <p class="attr-title">pg_for_kakaopay</p>
+                <p class="attr-explanation">
+                    카카오페이 결제수단에 대해 [아임포트 설정]페이지 내 PG설정값 대신 적용할 PG설정값(아임포트 복수PG기능 참조)<br>
+                    <span class="attr-detail">예시) pg_for_kakaopay="TC0ONETIME"</span>
+                </p>
+
+                <p class="attr-title">pg_for_paypal</p>
+                <p class="attr-explanation">
+                    Paypal 결제수단에 대해 [아임포트 설정]페이지 내 PG설정값 대신 적용할 PG설정값(아임포트 복수PG기능 참조)<br>
+                    <span class="attr-detail">예시) pg_for_paypal="your-facilitator_api1.iamport.kr"</span>
+                </p>
 			</div>
 			<img src="<?=plugin_dir_url( __FILE__ )?>../../assets/img/payment-modal.jpg" class="attr-img">
 			<div class="vir-div"></div>

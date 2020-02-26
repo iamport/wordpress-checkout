@@ -58,7 +58,7 @@ if ( !class_exists('IamportPaymentButton') ) {
 			wp_register_script('daum-postcode-for-https', 'https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js');
 			wp_enqueue_script('daum-postcode-for-https');
 
-			wp_register_script('iamport-bundle-js', plugins_url('../dist/bundle.js', __FILE__), array(), '20190909');
+			wp_register_script('iamport-bundle-js', plugins_url('../dist/bundle.js', __FILE__), array(), '20191230');
 		}
 
 		public function hook_payment_box($atts, $content = null) {
@@ -79,6 +79,13 @@ if ( !class_exists('IamportPaymentButton') ) {
 				'class' 			=> null,
 				'redirect_after' 	=> null,
 				'currency'          => null, // null 은 KRW
+                'digital'           => 'no',
+                'pg_for_card'       => null,
+                'pg_for_trans'      => null,
+                'pg_for_vbank'      => null,
+                'pg_for_phone'      => null,
+                'pg_for_kakaopay'   => null,
+                'pg_for_paypal'     => null,
 			), $atts );
 
 
@@ -167,6 +174,7 @@ if ( !class_exists('IamportPaymentButton') ) {
 			// $amountList = array_unique( explode(',', $a['amount']) );
 			$amountList = array_unique( preg_split("/,(?![^(]*\))/", $a['amount']) ); //괄호 안에 comma가 있을 수도 있다.
 			$taxFreeList = explode(',', $a['tax_free']);
+			$isDigital = filter_var($a['digital'], FILTER_VALIDATE_BOOLEAN);
 			/* ---------- 라벨형 금액 대비 ---------- */
 			if ( $amountList[0] != 'variable' ) {
 				foreach ( $amountList as $idx=>$amount ) {
@@ -202,9 +210,37 @@ if ( !class_exists('IamportPaymentButton') ) {
 			$this->buttonContext[ "orderTitle" ] = $a["name"];
 			$this->buttonContext[ "fieldLists" ] = $fieldLists;
 			$this->buttonContext[ "currency"   ] = $a["currency"];
+			$this->buttonContext[ "isDigital"   ] = $isDigital;
 
 			$device = "";
 			if ( wp_is_mobile() ) $device = "mobile";
+
+			//PG설정 변경부분
+            //button 마다 다른 configuration
+			$pgForPaymentContext = array();
+
+            $pgMethods = array('card', 'trans', 'vbank', 'phone', 'kakaopay', 'paypal');
+            foreach ($pgMethods as $m) {
+                $_key = 'pg_for_' . $m;
+	            if (!empty($a[$_key])) {
+	                $configValue = explode('.', $a[$_key], 2);
+
+	                if (in_array($m, array('kakaopay', 'paypal'))) { //kakaopay.TC0ONETIME, TC0ONETIME 모두 지원
+		                if (count($configValue) > 1) {
+			                $pgForPaymentContext[$m . '_mid'] = $configValue[1];
+		                } else {
+			                $pgForPaymentContext[$m . '_mid'] = $configValue[0];
+		                }
+                    } else {
+		                $pgForPaymentContext[$m] = $configValue[0];
+
+		                if (count($configValue) > 1) {
+			                $pgForPaymentContext[$m . '_mid'] = $configValue[1];
+		                }
+	                }
+                }
+            }
+			$this->buttonContext[ "pgForPayment" ] = $pgForPaymentContext;
 
 			/* ---------- CONTROLLER ---------- */
 			$iamportButtonFields = array(
@@ -228,7 +264,7 @@ if ( !class_exists('IamportPaymentButton') ) {
 			/* ---------- VIEW ---------- */
 			$iamportPaymentModal = array(
 				'attr'			      => $a,
-				'hasCustomFields'	=> !empty($buttonContext["customFields"]),
+				'hasCustomFields'	=> !empty($this->buttonContext["customFields"]),
 				'uuid'			      => $uuid,
 				'methodNames'	    => $this->method_names,
 				'regexNewline'	  => '/(\s*?\n\s*?)/',

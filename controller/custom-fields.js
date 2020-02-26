@@ -199,9 +199,9 @@ jQuery(($) => {
 
 		/* ---------- 뒤로가는 화살표 버튼 눌렀을때 ---------- */
 		$(uuidToStringForGoBack).click(() => {
+			let iamportSurveyBox = $('#iamport-survey-box-' + uuid);
 			let modalContainer = iamportSurveyBox.find('.iamport-modal-container');
 			let iamportBox = $('#' + uuid);
-			let iamportSurveyBox = $('#iamport-survey-box-' + uuid);
 
 			$(iamportBox).css({ "display": "none" });
 			setIamportModalBox($, iamportSurveyBox, device);
@@ -458,6 +458,8 @@ function iamportAjaxCall($, iamportBox, fileFields, inputValues, buttonContext, 
 	const amount_label = inputValues.amount_label;
 	const redirect_after = iamportBox.find('#iamport-payment-submit').attr('data-redirect-after');
 	const payButton = iamportBox.find('#iamport-payment-submit');
+	const isDigital = buttonContext.isDigital;
+	const pgForPaymentContext = buttonContext.pgForPayment;
 
 	if ( order_amount < 0 ) {
 		alert('결제금액이 올바르지 않습니다.');
@@ -512,13 +514,19 @@ function iamportAjaxCall($, iamportBox, fileFields, inputValues, buttonContext, 
 		} else if ( pay_method === 'paypal' ) {
 			param.pg = 'paypal';
 			param.pay_method = 'card';
+		} else if ( pgForPaymentContext[pay_method] ) {
+			param.pg = pgForPaymentContext[pay_method];
 		} else if ( pgConfig[pay_method] && pgConfig[pay_method] !== 'default' ) {
 			param.pg = pgConfig[pay_method];
 		}
 
 		//추가 PG지정
-		if (param.pg && pgConfig[pay_method + '_mid']) {
-			param.pg = param.pg + '.' + pgConfig[pay_method + '_mid'];
+		if (param.pg) {
+			if (pgForPaymentContext[pay_method + '_mid']) {
+				param.pg = param.pg + '.' + pgForPaymentContext[pay_method + '_mid'];
+			} else if (pgConfig[pay_method + '_mid']) {
+				param.pg = param.pg + '.' + pgConfig[pay_method + '_mid'];
+			}
 		}
 
 		// 다날 가상계좌 사업자등록번호
@@ -543,6 +551,11 @@ function iamportAjaxCall($, iamportBox, fileFields, inputValues, buttonContext, 
 		//custom data 설정
 		if (!$.isEmptyObject(extraFields)) {
 			param.custom_data = extraFields;
+		}
+
+		//digital option 적용
+		if (isDigital) {
+			param.digital = true;
 		}
 
 		IMP.request_pay(param, (callback) => {

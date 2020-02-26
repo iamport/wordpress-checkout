@@ -3,8 +3,8 @@ Contributors: iamport
 Donate link: http://www.iamport.kr
 Tags: payment, payment-button, iamport, woocommerce, button, pg, gateway
 Requires at least: 3.0.1
-Tested up to: 5.0.1
-Stable tag: 1.1.11
+Tested up to: 5.3.2
+Stable tag: 1.1.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,13 @@ https://www.facebook.com/iamportservice
 
 
 == Changelog ==
+= 1.1.13 =
+* [아임포트 설정] 페이지 내 <결제수단별 PG설정> 값을 버튼 숏코드 별로 대체할 수 있도록 속성 지원(pg\_for\_card, pg\_for\_trans, pg\_for\_vbank, pg\_for\_phone, pg\_for\_kakaopay, pg\_for\_paypal)
+* 설문조사 작성 후 결제페이지 진입했을 때 뒤로가기 버튼 안나오는 버그 수정
+
+= 1.1.12 =
+* 휴대폰 소액결제를 위해 digital 속성 추가
+
 = 1.1.11 =
 * 결제금액(amount)중 면세금액 처리를 위한 tax_free 속성 숏코드 지원
 
