@@ -273,15 +273,14 @@ if ( !class_exists('IamportPaymentButton') ) {
 
 			extract($iamportPaymentModal);
 
-
-			/* ---------- 아임포트 결제버튼 ---------- */
-			ob_start();
-
 			require(dirname(__FILE__).'/../view/modal/payment.php');
 			require(dirname(__FILE__).'/../view/modal/survey.php');
 			require(dirname(__FILE__).'/../view/modal/result.php');
 			require(dirname(__FILE__).'/../view/modal/login.php');
 			require(dirname(__FILE__).'/../view/modal/background.php');
+
+			/* ---------- 아임포트 결제버튼 ---------- */
+			ob_start();
 			?>
 				<a href="#<?=$uuid?>" id="<?=$uuid?>-popup" class="<?=$a['class']?>" style="<?=(empty($a['class']) && !empty($a['style'])) ? $a['style'] : ''?>"><?=$content?></a>
 			<?php
